@@ -46,3 +46,19 @@ for n in range(2,10):
 
 plt.plot(range(2,10), ss)
 
+km = KMeans(n_clusters=4)
+y = km.fit_predict(kmeans_df)
+
+kmeans_df['Cluster'] = y
+
+# We want 2 principal components for the graph
+pri_comp_anal = PCA(n_components=2)
+
+# Performs PCA on the data
+principal_components = pri_comp_anal.fit_transform(kmeans_df)
+
+pca_df = pd.DataFrame(principal_components, columns=['Principal Component 1', "Principal Component 2"])
+
+kmeans_df = pd.concat([kmeans_df, pca_df], axis=1)
+
+x
