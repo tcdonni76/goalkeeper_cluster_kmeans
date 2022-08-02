@@ -61,4 +61,43 @@ pca_df = pd.DataFrame(principal_components, columns=['Principal Component 1', "P
 
 kmeans_df = pd.concat([kmeans_df, pca_df], axis=1)
 
-x
+km = KMeans(n_clusters=4)
+y = km.fit_predict(kmeans_df)
+
+kmeans_df['Cluster'] = y
+
+# We want 2 principal components for the graph
+pri_comp_anal = PCA(n_components=2)
+
+# Performs PCA on the data
+principal_components = pri_comp_anal.fit_transform(kmeans_df)
+
+pca_df = pd.DataFrame(principal_components, columns=['Principal Component 1', "Principal Component 2"])
+
+kmeans_df = pd.concat([kmeans_df, pca_df], axis=1)
+
+kmeans_df['Player'] = df['Player']
+kmeans_df['Comp'] = df['Comp']
+print(kmeans_df)
+prem = kmeans_df[kmeans_df['Comp'] == 'eng Premier League']
+df_one = kmeans_df[kmeans_df['Cluster'] == 0]
+df_two = kmeans_df[kmeans_df['Cluster'] == 1]
+df_three = kmeans_df[kmeans_df['Cluster'] == 2]
+df_four = kmeans_df[kmeans_df['Cluster'] == 3]
+
+
+
+plt.show()
+
+plt.title("KMeans clustering for top 5 league goalkeepers")
+plt.scatter(df_one['Principal Component 1'], df_one['Principal Component 2'], label="Cluster One")
+plt.scatter(df_two['Principal Component 1'], df_two['Principal Component 2'], label="Cluster Two")
+plt.scatter(df_three['Principal Component 1'], df_three['Principal Component 2'], label="Cluster Three")
+plt.scatter(df_four['Principal Component 1'], df_four['Principal Component 2'], label="Cluster Four")
+
+for x, y, name in zip(prem['Principal Component 1'], prem['Principal Component 2'], prem['Player']):
+    print(str(x) + str(y) + name)
+    plt.text(x, y, name,fontsize=5)
+
+plt.legend()
+plt.show()
