@@ -32,3 +32,7 @@ kmeans_df = kmeans_df.drop('90s', axis=1)
 
 columns = list(kmeans_df)
 
+scaler = StandardScaler()
+kmeans_df = scaler.fit_transform(kmeans_df.to_numpy())
+kmeans_df = pd.DataFrame(kmeans_df, columns=columns)
+
