@@ -36,3 +36,13 @@ scaler = StandardScaler()
 kmeans_df = scaler.fit_transform(kmeans_df.to_numpy())
 kmeans_df = pd.DataFrame(kmeans_df, columns=columns)
 
+ss = []
+for n in range(2,10):
+    km = KMeans(n_clusters=n)
+    km.fit(kmeans_df)
+    label = km.predict(kmeans_df)
+    silhouette = silhouette_score(kmeans_df, label)
+    ss.append(silhouette)
+
+plt.plot(range(2,10), ss)
+
